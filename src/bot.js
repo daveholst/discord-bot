@@ -31,8 +31,7 @@ const hass = new HomeAssistant({
   ignoreCert: false 
 });
 
-console.log(hass.status());
-
+client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 client.on('ready', () => {
   console.log(`${client.user.username}` + ' is ready!');
@@ -59,16 +58,26 @@ client.on('message', (message) => {
       message.channel.send('Dicks = Ca$h Baby!');
     }
     else if (CMD_NAME === 'light') {
-      hass.services.call(args, 'light', 'office_light')
+      hass.services.call(args[0], 'light', 'office_light')
         .then(res => console.log('Toggled lights', res))
         .catch(err => console.error(err))
       message.channel.send('Office Lights Toggled with ' + args + ' 🙉');
         // .then(res => message.channel.send('Office lights have been toggled!', res));
         // .catch(err => console.error(err));
+    }
+    else if (CMD_NAME === 'status') {
+      const newStatus = args.join(' '); 
+      client.user.setActivity(newStatus);
 
     }
 
   }
 });
 
-client.login(process.env.DISCORDJS_BOT_TOKEN);
+client.on("guildMemberAdd", (member) => {
+  let guild = member.guild; // Reading property `guild` of guildmember object.
+  let memberTag = member.user.tag; // GuildMembers don't have a tag property, read property user of guildmember to get the user object from it
+  if(guild.systemChannel){ // Checking if it's not null
+    guild.systemChannel.send(memberTag + " has joined!");
+  }
+  });
