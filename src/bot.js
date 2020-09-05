@@ -1,13 +1,13 @@
 require('dotenv').config();
 
-//discord
+//discord connect
 const {
   Client
 } = require('discord.js');
 const client = new Client();
 const PREFIX = '!';
 
-//home-assistant
+//home-assistant connect 
 const HomeAssistant = require ('homeassistant');
 const hass = new HomeAssistant({
   // Your Home Assistant host
@@ -60,24 +60,35 @@ client.on('message', (message) => {
     else if (CMD_NAME === 'light') {
       hass.services.call(args[0], 'light', 'office_light')
         .then(res => console.log('Toggled lights', res))
-        .catch(err => console.error(err))
+        .catch(err => console.error(err));
       message.channel.send('Office Lights Toggled with ' + args + ' 🙉');
-        // .then(res => message.channel.send('Office lights have been toggled!', res));
-        // .catch(err => console.error(err));
+      // .then(res => message.channel.send('Office lights have been toggled!', res));
+      // .catch(err => console.error(err));
     }
     else if (CMD_NAME === 'status') {
       const newStatus = args.join(' '); 
       client.user.setActivity(newStatus);
+    }
 
+    else if (CMD_NAME === 'weather') { 
+      let outsideTemp; 
+      hass.templates.render('Current Dawesville temperature is {{ states("sensor.outside_temperature")}}°C. The wind is gusting {{ states("sensor.wind_speed_gust")}}km/h from the {{ states("sensor.ww_wind_direction")}}. Today we have had {{ states("sensor.rain_today")}}mm of rain.')
+        .then(res => message.channel.send(res))
+        .catch(err => console.error(err));
+      // hass.states.get('sensor', 'outside_temperature')
+      //   .then(res => console.log('Got Temp', res))
+      //   .catch(err => console.error(err))
+      // message.channel.send(outsideTemp);
+      // console.log(outsideTemp);
     }
 
   }
 });
 
-client.on("guildMemberAdd", (member) => {
+client.on('guildMemberAdd', (member) => {
   let guild = member.guild; // Reading property `guild` of guildmember object.
   let memberTag = member.user.tag; // GuildMembers don't have a tag property, read property user of guildmember to get the user object from it
   if(guild.systemChannel){ // Checking if it's not null
-    guild.systemChannel.send(memberTag + " has joined!");
+    guild.systemChannel.send('Hi' + memberTag + ', welcome to the S|{raWn server!');
   }
-  });
+});

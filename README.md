@@ -16,7 +16,10 @@ HASS_TOKEN=095ty09409tdghdg-0
 
 ## TODO 
 
-- [ ] Custom welcome message for all
+- [x] Custom welcome message on server join
+- [x] weather command - off my station !weather
+- [ ] weather command - for other users that pulls data from BOM / WW API.
+
 - [ ] Only certain roles can control home assistant 
 - [ ] Individual welcome messages for users
 - [ ] Spotify now playing command
