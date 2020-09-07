@@ -71,8 +71,7 @@ client.on('message', (message) => {
     }
 
     else if (CMD_NAME === 'weather') { 
-      let outsideTemp; 
-      hass.templates.render('Current Dawesville temperature is {{ states("sensor.outside_temperature")}}°C. The wind is gusting {{ states("sensor.wind_speed_gust")}}km/h from the {{ states("sensor.ww_wind_direction")}}. Today we have had {{ states("sensor.rain_today")}}mm of rain.')
+      hass.templates.render('Current Dawesville temperature is **{{ states("sensor.outside_temperature")}}°C**. The wind is gusting **{{ states("sensor.wind_speed_gust")}} km/h** from the **{{ states("sensor.ww_wind_direction")}}**. Today we have had **{{ states("sensor.rain_today")}} mm** of rain.')
         .then(res => message.channel.send(res))
         .catch(err => console.error(err));
       // hass.states.get('sensor', 'outside_temperature')
@@ -81,6 +80,16 @@ client.on('message', (message) => {
       // message.channel.send(outsideTemp);
       // console.log(outsideTemp);
     }
+
+    else if (CMD_NAME === 'server') { 
+      hass.templates.render('Current unRAID CPU usage **{{ states("sensor.glances_cpu_used") }}%** @ **{{ states("sensor.glances_tdie_temp") }}°C**. Case Temp **{{ states("sensor.server_temp")}}°C**. RAM Usage **{{ states("sensor.glances_ram_used_percent") }}%**. ')
+        .then(res => message.channel.send(res))
+        .catch(err => console.error(err));
+
+    }
+
+
+
 
   }
 });
