@@ -132,15 +132,43 @@ client.on('message', (message) => {
           let rain24 = nearestStation.period.level.elements.rainfall_24hr.value;
           if (rain24 === undefined) rain24 = 'N/A';
           
-          
+          message.channel.send(
+            `Current Conditions in **${stationName}**. Currently **${airTemp}°C** @  **${humidity}%** humidity.Todays min was **${minAirTemp}°C** with a max recorded temp of **${maxAirTemp}°C**. Wind is **${windSpeed}** km/h from the **${windDir}**. Rainfall **${rain9AM} mm** since 9am and **${rain24}mm** in the past 24 hours.`
+          );
+        });
+
+    }
+
+    else if (CMD_NAME === 'bomid') {
+      const stationID = args[0];
+      const state = args[1];
+      bom.getStationByBomId(stationID, state) // call the module
+        .then((nearestStation) => {
+          console.log(nearestStation); // log top level object
+          console.log(nearestStation.name); // log nearest station name
+          console.log(nearestStation.period.level.elements); // log nearest station data
+          const stationName = nearestStation.name;
+          let airTemp = nearestStation.period.level.elements.air_temperature.value;
+          if (airTemp === undefined) airTemp = 'N/A';
+          let humidity = nearestStation.period.level.elements['rel-humidity'].value;
+          if (humidity === undefined) humidity = 'N/A';
+          let minAirTemp = nearestStation.period.level.elements.minimum_air_temperature.value;
+          if (minAirTemp === undefined) minAirTemp = 'N/A';
+          let maxAirTemp = nearestStation.period.level.elements.maximum_air_temperature.value;
+          if (maxAirTemp === undefined) maxAirTemp = 'N/A';
+          let windSpeed = nearestStation.period.level.elements.wind_spd_kmh.value;
+          if (windSpeed === undefined) windSpeed = 'N/A';
+          let windDir = nearestStation.period.level.elements.wind_dir;
+          if (windDir === undefined) windDir = 'N/A';
+          let rain9AM = nearestStation.period.level.elements.rainfall.value;
+          if (rain9AM === undefined) rain9AM = 'N/A';  
+          let rain24 = nearestStation.period.level.elements.rainfall_24hr.value;
+          if (rain24 === undefined) rain24 = 'N/A';
           
           message.channel.send(
             `Current Conditions in **${stationName}**. Currently **${airTemp}°C** @  **${humidity}%** humidity.Todays min was **${minAirTemp}°C** with a max recorded temp of **${maxAirTemp}°C**. Wind is **${windSpeed}** km/h from the **${windDir}**. Rainfall **${rain9AM} mm** since 9am and **${rain24}mm** in the past 24 hours.`
           );
-        })
-
-      ;
-
+        });
     }
 
 
