@@ -13,6 +13,9 @@ HASS_TOKEN=095ty09409tdghdg-0
 
 - !status <new bot status> - sets the status of the bot
 - !light <command> - sets the state of the office light (turn_on,turn_off,toggle)
+- !weather - displays weather from weewx via homeassistant
+- !bom <postcode> - displays weather from bom. is a bit buggy matching postcode to station id.
+- !bomid <stationid> <STATE> eg. !bomid 066214 NSW - bom weather with station id used.
 
 ## TODO
 
