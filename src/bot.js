@@ -58,6 +58,13 @@ const wwToken = process.env.WW_TOKEN;
 //   }
 // })
 
+// function to get day of week
+function getDayOfWeek(date) {
+  const dayOfWeek = new Date(date).getDay();
+  return isNaN(dayOfWeek) ? null :
+    ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
+}
+
 client.on('message', (message) => {
   if (message.author.bot) return;
   if (message.content.startsWith(PREFIX)) {
@@ -135,6 +142,66 @@ client.on('message', (message) => {
             console.log(err);
           });
         });
+    }
+    else if (CMD_NAME === 'wwf') {
+      const postCode = args[0];
+      axios.get(`https://api.willyweather.com.au/v2/${wwToken}/search.json?query=${postCode}`)
+        .then(res => {
+          // console.log(res.data);
+          // console.log(res.data[0].id);
+          const stationID = res.data[0].id;
+
+          axios.all([
+            axios.get(`https://api.willyweather.com.au/v2/${wwToken}/locations/${stationID}/weather.json?forecasts=weather&days=5`),
+            // TODO change one of the below to receive percip forcast ?
+            axios.get(`https://api.willyweather.com.au/v2/${wwToken}/locations/${stationID}/weather.json?forecasts=rainfall&days=5`),
+            // axios.get(`https://api.willyweather.com.au/v2/${wwToken}/locations/${stationID}/weather.json?forecasts=rainfall&days=1`)
+          ]).then(axios.spread((res1, res2) => {
+            let name = res1.data.location.name;
+            let day1Date = res1.data.forecasts.weather.days[0].entries[0].dateTime;
+            let day1Precis = res1.data.forecasts.weather.days[0].entries[0].precis;
+            let day1Min = res1.data.forecasts.weather.days[0].entries[0].min;
+            let day1Max = res1.data.forecasts.weather.days[0].entries[0].max;
+            let day1Rain = res2.data.forecasts.rainfall.days[0].entries[0].rangeCode;
+            let day1Chance = res2.data.forecasts.rainfall.days[0].entries[0].probability;
+            let day2Date = res1.data.forecasts.weather.days[1].entries[0].dateTime;
+            let day2Day = getDayOfWeek(day2Date);
+            let day2Precis = res1.data.forecasts.weather.days[1].entries[0].precis;
+            let day2Min = res1.data.forecasts.weather.days[1].entries[0].min;
+            let day2Max = res1.data.forecasts.weather.days[2].entries[0].max;
+            let day2Rain = res2.data.forecasts.rainfall.days[1].entries[0].rangeCode;
+            let day2Chance = res2.data.forecasts.rainfall.days[1].entries[0].probability;
+            let day3Date = res1.data.forecasts.weather.days[2].entries[0].dateTime;
+            let day3Day = getDayOfWeek(day3Date);
+            let day3Precis = res1.data.forecasts.weather.days[2].entries[0].precis;
+            let day3Min = res1.data.forecasts.weather.days[2].entries[0].min;
+            let day3Max = res1.data.forecasts.weather.days[2].entries[0].max;
+            let day3Rain = res2.data.forecasts.rainfall.days[2].entries[0].rangeCode;
+            let day3Chance = res2.data.forecasts.rainfall.days[2].entries[0].probability;
+
+            let day4Date = res1.data.forecasts.weather.days[3].entries[0].dateTime;
+            let day4Day = getDayOfWeek(day4Date);
+            let day4Precis = res1.data.forecasts.weather.days[3].entries[0].precis;
+            let day4Min = res1.data.forecasts.weather.days[3].entries[0].min;
+            let day4Max = res1.data.forecasts.weather.days[3].entries[0].max;
+            let day4Rain = res2.data.forecasts.rainfall.days[3].entries[0].rangeCode;
+            let day4Chance = res2.data.forecasts.rainfall.days[3].entries[0].probability;
+
+            let day5Date = res1.data.forecasts.weather.days[4].entries[0].dateTime;
+            let day5Day = getDayOfWeek(day5Date);
+            let day5Precis = res1.data.forecasts.weather.days[4].entries[0].precis;
+            let day5Min = res1.data.forecasts.weather.days[4].entries[0].min;
+            let day5Max = res1.data.forecasts.weather.days[4].entries[0].max;
+            let day5Rain = res2.data.forecasts.rainfall.days[4].entries[0].rangeCode;
+            let day5Chance = res2.data.forecasts.rainfall.days[4].entries[0].probability;
+
+            let forecast = `Forecast for **${name}**\n**Today**: ${day1Precis} | Min: ${day1Min}°C | Max: ${day1Max}°C | Rainfall: ${day1Rain}mm @ ${day1Chance}%\n**Tomorrow:** ${day2Precis} | Min: ${day2Min}°C | Max: ${day2Max}°C | Rainfall: ${day2Rain}mm @ ${day2Chance}%\n**${day3Day}:** ${day3Precis} | Min: ${day3Min}°C | Max: ${day3Max}°C | Rainfall: ${day3Rain}mm @ ${day3Chance}%\n**${day4Day}:** ${day4Precis} | Min: ${day4Min}°C | Max: ${day4Max}°C | Rainfall: ${day4Rain}mm @ ${day4Chance}%\n**${day5Day}:** ${day5Precis} | Min: ${day5Min}°C | Max: ${day5Max}° | Rainfall: ${day5Rain}mm @ ${day5Chance}% `  ;
+            message.channel.send(forecast);
+          })).catch(err => {
+            console.log(err);
+          });
+        });
+
     }
   }
 });

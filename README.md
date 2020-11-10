@@ -19,15 +19,18 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - ~~!bom <postcode> - displays weather from bom. is a bit buggy matching postcode to station id.~~
 - ~~!bomid <stationid> <STATE> eg. !bomid 066214 NSW - bom weather with station id used.~~
 - !ww <postcode> or <place_name> eg !bom 6255 or !bom albany - return willy weather + todays forecast.
+- !wwf <postcode> or <place_name> to get 4 day forcast
 
 ## TODO
 
 - [x] Custom welcome message on server join
 - [x] weather command - off my station !weather
-- [x] weather command - for other users that pulls data from BOM / WW API.
-  - [x] :bug:BUG - undefined weather reading now returns 'N/A'
-  - [x] :bug:BUG - doesnt work with NSW postcodes - result of aupostcode.js file not matching bom site id#.
-  - [x] :bug:BUG - can't get the TS file to update above. write own updater or indexer?
+- [x] weather command - !ww for other users that pulls data from BOM / WW API.
+- [] :bug:BUG - incorrect town name crashes server ie. bailingup not Balingup..
+- [x] !wwf <postcode> forcast command
+      ~~ - [x] :bug:BUG - undefined weather reading now returns 'N/A' ~~
+      ~~ - [x] :bug:BUG - doesnt work with NSW postcodes - result of aupostcode.js file not matching bom site id#. ~~
+      ~~ - [x] :bug:BUG - can't get the TS file to update above. write own updater or indexer? ~~
 - [ ] Only certain roles can control home assistant
 - [x] :fire:Change weather to be faster and use willyWeather
 - [ ] Individual welcome messages for users
@@ -35,3 +38,5 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - [ ] Announcements via webooks
 - [ ] !3d print with a image from 3dprinter + status.
 - [ ] dockerize and deploy on server
+- [ ] add a !wwf <postcode/location> <day>
+- [ ] magic !8ball fortune teller style thingo
