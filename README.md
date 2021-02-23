@@ -6,9 +6,11 @@ My first attempt at a discord bot for the lovely folks over at S|{rawn Gaming.
 
 Requires dotenv to be installed and a .env file containing the following:
 
+```
 DISCORDJS_BOT_TOKEN=9847wwe8989fs98sgf
 HASS_TOKEN=095ty09409tdghdg-0
 WW_TOKEN=#234ewrewrfef@#\$$##$4
+```
 
 ## Currently Working
 
