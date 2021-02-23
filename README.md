@@ -29,17 +29,14 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - [x] weather command - off my station !weather
 - [x] weather command - !ww for other users that pulls data from BOM / WW API.
 - [] :bug:BUG - incorrect town name crashes server ie. bailingup not Balingup..
-- [x] !wwf <postcode> forcast command
-      ~~ - [x] :bug:BUG - undefined weather reading now returns 'N/A' ~~
-      ~~ - [x] :bug:BUG - doesnt work with NSW postcodes - result of aupostcode.js file not matching bom site id#. ~~
-      ~~ - [x] :bug:BUG - can't get the TS file to update above. write own updater or indexer? ~~
+- [x] !wwf <postcode/location> forcast command
 - [ ] Only certain roles can control home assistant
 - [x] :fire:Change weather to be faster and use willyWeather
 - [ ] Individual welcome messages for users
 - [ ] Spotify now playing command
 - [ ] Announcements via webooks
 - [ ] !3d print with a image from 3dprinter + status.
-- [ ] dockerize and deploy on server
+- [x] dockerize and deploy on server
 - [ ] add a !wwf <postcode/location> <day>
 - [ ] magic !8ball fortune teller style thingo
 - [ ] .env docker path link.
