@@ -1,4 +1,4 @@
-# S|{raWn Discod Bot
+# S|{raWn Discord Bot
 
 My first attempt at a discord bot for the lovely folks over at S|{rawn Gaming.
 
