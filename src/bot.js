@@ -90,7 +90,7 @@ client.on('message', (message) => {
     }
 
     else if (CMD_NAME === 'weather') {
-      hass.templates.render('Current Dawesville temperature is **{{ states("sensor.outside_temperature")}}°C**. The wind is gusting **{{ states("sensor.wind_speed_gust")}} km/h** from the **{{ states("sensor.ww_wind_direction")}}**. Today we have had **{{ states("sensor.rain_today")}} mm** of rain.')
+      hass.templates.render('Current Dawesville temperature is **{{ states("sensor.outside_temperature")}}°C**. The wind is gusting **{{ states("sensor.wind_speed_gust")}} km/h** from the **{{ states("sensor.mandurah_wind_direction")}}**. Today we have had **{{ states("sensor.rain_today")}} mm** of rain.')
         .then(res => message.channel.send(res))
         .catch(err => console.error(err));
       // hass.states.get('sensor', 'outside_temperature')
