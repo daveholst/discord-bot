@@ -3,7 +3,7 @@ FROM node:12
 #create the dir
 WORKDIR /usr/src/app
 
-#copy and install out bot
+#copy and install our bot
 COPY package*.json ./
 RUN npm install
 
@@ -12,3 +12,6 @@ COPY . .
 
 #start bot
 CMD ["node", "src/bot.js"]
+
+#set Timezone
+ENV TZ Perth/Australia
