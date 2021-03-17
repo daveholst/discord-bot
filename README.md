@@ -22,13 +22,14 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - ~~!bomid <stationid> <STATE> eg. !bomid 066214 NSW - bom weather with station id used.~~
 - !ww <postcode> or <place_name> eg !bom 6255 or !bom albany - return willy weather + todays forecast.
 - !wwf <postcode> or <place_name> to get 4 day forcast
+- !beer for current beer fridge temp + happy hour count down!
 
 ## TODO
 
 - [x] Custom welcome message on server join
 - [x] weather command - off my station !weather
 - [x] weather command - !ww for other users that pulls data from BOM / WW API.
-- [] :bug:BUG - incorrect town name crashes server ie. bailingup not Balingup..
+- [ ] :bug:BUG - incorrect town name crashes server ie. bailingup not Balingup..
 - [x] !wwf <postcode/location> forcast command
 - [ ] Only certain roles can control home assistant
 - [x] :fire:Change weather to be faster and use willyWeather
@@ -40,3 +41,9 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - [ ] add a !wwf <postcode/location> <day>
 - [ ] magic !8ball fortune teller style thingo
 - [ ] .env docker path link.
+- [x] add !beer countdown to beer o'clock + beer fridge temp
+
+## CI/CD
+
+- Shell script written to pull and rebuild docker on server.
+- [ ] automate that back into a github action?

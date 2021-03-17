@@ -131,12 +131,12 @@ client.on('message', (message) => {
             let max = res2.data[0].forecasts.weather.days[0].entries[0].max;
             let preRainProb = res3.data.forecasts.rainfall.days[0].entries[0].probability;
             let preRainStart = res3.data.forecasts.rainfall.days[0].entries[0].startRange;
-            if (preRainStart === null) { preRainStart = '';}
+            if (preRainStart === null) { preRainStart = ''; }
             let preRainDivide = res3.data.forecasts.rainfall.days[0].entries[0].rangeDivide;
             let preRainEnd = res3.data.forecasts.rainfall.days[0].entries[0].endRange;
 
 
-            let currentWeather = `**${name}** current conditions - **${temp}°C** @  **${humidity}%** humidity. Wind is **${wind}km/h** from the **${windDir}**. Rainfall today **${rain}mm**. Forecast for today, **${predict}** | **${max}°C** / **${min}°C** |. **${preRainProb}%** chance of **${preRainStart} ${preRainDivide} ${preRainEnd}mm** of rain. `  ;
+            let currentWeather = `**${name}** current conditions - **${temp}°C** @  **${humidity}%** humidity. Wind is **${wind}km/h** from the **${windDir}**. Rainfall today **${rain}mm**. Forecast for today, **${predict}** | **${max}°C** / **${min}°C** |. **${preRainProb}%** chance of **${preRainStart} ${preRainDivide} ${preRainEnd}mm** of rain. `;
             message.channel.send(currentWeather);
           })).catch(err => {
             console.log(err);
@@ -195,12 +195,46 @@ client.on('message', (message) => {
             let day5Rain = res2.data.forecasts.rainfall.days[4].entries[0].rangeCode;
             let day5Chance = res2.data.forecasts.rainfall.days[4].entries[0].probability;
 
-            let forecast = `Forecast for **${name}**\n**Today**: ${day1Precis} | Min: ${day1Min}°C | Max: ${day1Max}°C | Rainfall: ${day1Rain}mm @ ${day1Chance}%\n**Tomorrow:** ${day2Precis} | Min: ${day2Min}°C | Max: ${day2Max}°C | Rainfall: ${day2Rain}mm @ ${day2Chance}%\n**${day3Day}:** ${day3Precis} | Min: ${day3Min}°C | Max: ${day3Max}°C | Rainfall: ${day3Rain}mm @ ${day3Chance}%\n**${day4Day}:** ${day4Precis} | Min: ${day4Min}°C | Max: ${day4Max}°C | Rainfall: ${day4Rain}mm @ ${day4Chance}%\n**${day5Day}:** ${day5Precis} | Min: ${day5Min}°C | Max: ${day5Max}° | Rainfall: ${day5Rain}mm @ ${day5Chance}% `  ;
+            let forecast = `Forecast for **${name}**\n**Today**: ${day1Precis} | Min: ${day1Min}°C | Max: ${day1Max}°C | Rainfall: ${day1Rain}mm @ ${day1Chance}%\n**Tomorrow:** ${day2Precis} | Min: ${day2Min}°C | Max: ${day2Max}°C | Rainfall: ${day2Rain}mm @ ${day2Chance}%\n**${day3Day}:** ${day3Precis} | Min: ${day3Min}°C | Max: ${day3Max}°C | Rainfall: ${day3Rain}mm @ ${day3Chance}%\n**${day4Day}:** ${day4Precis} | Min: ${day4Min}°C | Max: ${day4Max}°C | Rainfall: ${day4Rain}mm @ ${day4Chance}%\n**${day5Day}:** ${day5Precis} | Min: ${day5Min}°C | Max: ${day5Max}° | Rainfall: ${day5Rain}mm @ ${day5Chance}% `;
             message.channel.send(forecast);
           })).catch(err => {
             console.log(err);
           });
         });
+
+    } else if (CMD_NAME === 'beer') {
+      let beerFridgeRes = '';
+      let happyMessage = '';
+      const happyHour = 17.0;
+      const date = new Date();
+      // curent minutes as fraction of an hour
+      const currentMin = parseInt(date.getMinutes()) / 60;
+      const currentHour = parseInt(date.getHours()) + currentMin ;
+      const fetchBeerFridge = async () => {
+        beerFridgeRes = await hass.templates.render('The beer fridge is **{{ states("sensor.shed_fridge") }}°C** and');
+        // console.log(beer1);
+        if (currentHour >= happyHour) {
+          happyMessage = ' it\'s Happy Hour! 🍻';
+        } else {
+          //calc time left til happy hour
+          let timeLeftRaw = happyHour - currentHour;
+          console.log(timeLeftRaw);
+          // get hours
+          const hoursLeft = Math.floor(timeLeftRaw);
+          // get Minutes
+          const minsLeft = Math.floor((timeLeftRaw % hoursLeft) * 60);
+          console.log(minsLeft);
+          happyMessage = `it's ${hoursLeft} hours and ${minsLeft} minutes til happy hour. 😭 `;
+        }
+
+        const beerMessage = `${beerFridgeRes} ${happyMessage}`;
+        message.channel.send(beerMessage);
+      };
+      fetchBeerFridge();
+      // console.log(happyHour);
+      // console.log(currentHour);
+
+      // (isItHappyHour());
 
     }
   }
@@ -213,3 +247,4 @@ client.on('guildMemberAdd', (member) => {
     guild.systemChannel.send('Hi' + memberTag + ', welcome to the S|{raWn server!');
   }
 });
+
