@@ -14,5 +14,5 @@ COPY . .
 CMD ["node", "src/bot.js"]
 
 #set Timezone
-ENV TZ Perth/Australia
+ENV TZ=Perth/Australia
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
