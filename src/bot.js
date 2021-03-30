@@ -205,7 +205,7 @@ client.on('message', (message) => {
     } else if (CMD_NAME === 'beer') {
       let beerFridgeRes = '';
       let happyMessage = '';
-      const happyHour = 17.0;
+      const happyHour = 16.0;
       const date = new Date();
       // curent minutes as fraction of an hour
       const currentMin = parseInt(date.getMinutes()) / 60;
