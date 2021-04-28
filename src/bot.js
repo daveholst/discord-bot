@@ -113,8 +113,17 @@ client.on('message', (message) => {
 
 
     else if (CMD_NAME === 'ww') {
-      const postCode = args[0];
-      axios.get(`https://api.willyweather.com.au/v2/${wwToken}/search.json?query=${postCode}`)
+      let postCode = args[0];
+      const userId = message.author.id;
+      if (!postCode) {
+        users.forEach(user => {
+          if (userId === user.userId) {
+            postCode = user.postcode;
+          } else {
+            postCode = '6000';
+          }
+        });
+      }      axios.get(`https://api.willyweather.com.au/v2/${wwToken}/search.json?query=${postCode}`)
         .then(res => {
           console.log(res.data);
           console.log(res.data[0].id);
@@ -149,7 +158,17 @@ client.on('message', (message) => {
         });
     }
     else if (CMD_NAME === 'wwf') {
-      const postCode = args[0];
+      let postCode = args[0];
+      const userId = message.author.id;
+      if (!postCode) {
+        users.forEach(user => {
+          if (userId === user.userId) {
+            postCode = user.postcode;
+          } else {
+            postCode = '6000';
+          }
+        });
+      }
       axios.get(`https://api.willyweather.com.au/v2/${wwToken}/search.json?query=${postCode}`)
         .then(res => {
           // console.log(res.data);
