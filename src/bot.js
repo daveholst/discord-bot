@@ -1,4 +1,9 @@
 require('dotenv').config();
+// bring in the users 'database' <- aka. jank text files
+const fs = require('fs');
+const rawUsers = fs.readFileSync('./src/users.json');
+const users = JSON.parse(rawUsers);
+
 //axios
 const axios = require('axios');
 
@@ -237,12 +242,50 @@ client.on('message', (message) => {
       // (isItHappyHour());
 
     } else if (CMD_NAME === 'swl') {
-      // console.log(message);
       const userName = message.author.username;
       const userId = message.author.id;
       const postcode = args[0];
-      console.log(`User: ${userName} ID: ${userId} wants to set postcode to ${postcode} `);
+      // console.log(message);
+      // Nothing in array ?
+      if (users.length === 0) {
+        const userDetails = {
+          username: userName,
+          userId: userId,
+          postcode: postcode
+        };
+        users.push(userDetails);
+        fs.writeFile('./src/users.json', JSON.stringify(users),
+          (err) => err ? console.log(err) : console.log('DB Write Success'));
+        return;
+      }
 
+      // find user and see if it exists & add
+      users.forEach(user => {
+        if (userId === user.userId) {
+          user.postcode = postcode;
+          fs.writeFile('./src/users.json', JSON.stringify(users),
+            (err) => err ? console.log(err) : console.log('DB Write Success'));
+          return;
+          // if no user, make one
+        }
+        // array has length but user is not in the DB
+        const userDetails = {
+          username: userName,
+          userId: userId,
+          postcode: postcode
+        };
+        users.push(userDetails);
+        fs.writeFile('./src/users.json', JSON.stringify(users),
+          (err) => err ? console.log(err) : console.log('DB Write Success'));
+
+      });
+
+      // if user doesnt exist, create
+
+
+
+      console.log(`User: ${userName} ID: ${userId} wants to set postcode to ${postcode} `);
+      console.log(users);
     }
   }
 });
