@@ -20,8 +20,9 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - `!weather` - displays weather from weewx via homeassistant
 - ~~`!bom` <postcode> - displays weather from bom. is a bit buggy matching postcode to station id.~~
 - ~~`!bomid` <stationid> <STATE> eg. `!bomid 066214 NSW` - bom weather with station id used.~~
-- `!ww` <postcode> or <place_name> eg `!ww 6255` or `!ww albany` - return willy weather + todays forecast.
-- `!wwf` <postcode> or <place_name> to get 4 day forcast
+- `!swl` <postcode> or <place_name> sets the users default
+- `!ww` <postcode> or <place_name> eg `!ww 6255` or `!ww albany` - return willy weather + todays forecast. If no Argument is parsed it will use the users default that they set with `!swl`. If this doesn't exist it will default to 6000.
+- `!wwf` <postcode> or <place_name> to get 4 day forecast.If no Argument is parsed it will use the users default that they set with `!swl`. If this doesn't exist it will default to 6000.
 - `!beer` for current beer fridge temp + happy hour count down!
 
 ## TODO
@@ -29,7 +30,7 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - [x] Custom welcome message on server join
 - [x] weather command - off my station !weather
 - [x] weather command - `!ww` for other users that pulls data from BOM / WW API.
-- [ ] user preferred location stored somewhere? (db) so that can set with` !sdw (set default weather) 6255`
+- [x] user preferred location stored somewhere? (db) so that can set with` !sdw (set default weather) 6255`
 - [x] :bug:BUG - incorrect town name crashes server ie. bailingup not Balingup..
 - [x] `!wwf` <postcode/location> forcast command
 - [ ] Only certain roles can control home assistant
