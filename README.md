@@ -30,7 +30,7 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - [x] weather command - off my station !weather
 - [x] weather command - `!ww` for other users that pulls data from BOM / WW API.
 - [ ] user preferred location stored somewhere? (db) so that can set with` !sdw (set default weather) 6255`
-- [ ] :bug:BUG - incorrect town name crashes server ie. bailingup not Balingup..
+- [x] :bug:BUG - incorrect town name crashes server ie. bailingup not Balingup..
 - [x] `!wwf` <postcode/location> forcast command
 - [ ] Only certain roles can control home assistant
 - [x] :fire:Change weather to be faster and use willyWeather
@@ -45,8 +45,11 @@ WW_TOKEN=#234ewrewrfef@#\$$##$4
 - [x] add `!beer` countdown to beer o'clock + beer fridge temp
 - [x] code refactor with modules!
 - [ ] `!info` either prints github readme link or a list of commands?
+- [ ] Birthday messages with a DB
+- [ ] Change beer settings on a weekend / public holidays (API req'd4
+- [ ] !info for bot commands and settings
 
 ## CI/CD
 
-- [ ] Shell script written to pull and rebuild docker on server.
+- [x] Shell script written to pull and rebuild docker on server.
 - [ ] automate that back into a github action?

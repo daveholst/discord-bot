@@ -209,7 +209,7 @@ client.on('message', (message) => {
       const date = new Date();
       // curent minutes as fraction of an hour
       const currentMin = parseInt(date.getMinutes()) / 60;
-      const currentHour = parseInt(date.getHours()) + currentMin ;
+      const currentHour = parseInt(date.getHours()) + currentMin;
       const fetchBeerFridge = async () => {
         beerFridgeRes = await hass.templates.render('The beer fridge is **{{ states("sensor.shed_fridge") }}°C** and');
         // console.log(beer1);
@@ -235,6 +235,13 @@ client.on('message', (message) => {
       // console.log(currentHour);
 
       // (isItHappyHour());
+
+    } else if (CMD_NAME === 'swl') {
+      // console.log(message);
+      const userName = message.author.username;
+      const userId = message.author.id;
+      const postcode = args[0];
+      console.log(`User: ${userName} ID: ${userId} wants to set postcode to ${postcode} `);
 
     }
   }
