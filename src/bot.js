@@ -4,6 +4,9 @@ const fs = require('fs');
 const rawUsers = fs.readFileSync('./src/users.json');
 const users = JSON.parse(rawUsers);
 
+// bring in new weather module
+const { weatherToday, weatherForecast } = require('./ww.js');
+
 //axios
 const axios = require('axios');
 
@@ -115,6 +118,7 @@ client.on('message', (message) => {
     else if (CMD_NAME === 'ww') {
       let postCode = args[0];
       const userId = message.author.id;
+      // check database for default if no args passed
       if (!postCode) {
         for (let i = 0; i < users.length; i++) {
           const user = users[i];
@@ -126,39 +130,15 @@ client.on('message', (message) => {
           }
         }
       }
-      axios.get(`https://api.willyweather.com.au/v2/${wwToken}/search.json?query=${postCode}`)
-        .then(res => {
-          console.log(res.data);
-          console.log(res.data[0].id);
-          const stationID = res.data[0].id;
+      // get data and build message + sender
+      const weatherMessage = async () => {
+        const w = await weatherToday(postCode, wwToken);
+        let weatherMsg = `**${w.stationName}** current conditions - **${w.currentTemp}°C** @  **${w.currentHumidity}%** humidity. Wind is **${w.windSpeed}km/h** from the **${w.windDir}**. Rainfall today **${w.rainTotal}mm**. Forecast for today, **${w.forecastWords}** | **${w.forecastMax}°C** / **${w.forecastMin}°C** |. **${w.rainChance}%** chance of **${w.rainRangeStart} ${w.rainRangeDivide} ${w.rainRangeEnd}mm** of rain. `;
+        message.channel.send(weatherMsg);
 
-          axios.all([
-            axios.get(`https://api.willyweather.com.au/v2/${wwToken}/locations/${stationID}/weather.json?observational=true`),
-            axios.get(`https://api.willyweather.com.au/v2/${wwToken}/weather/summaries.json?ids=${stationID}`),
-            axios.get(`https://api.willyweather.com.au/v2/${wwToken}/locations/${stationID}/weather.json?forecasts=rainfall&days=1`)
-          ]).then(axios.spread((res1, res2, res3) => {
-            let name = res1.data.location.name;
-            let temp = res1.data.observational.observations.temperature.temperature;
-            let humidity = res1.data.observational.observations.humidity.percentage;
-            let wind = res1.data.observational.observations.wind.speed;
-            let windDir = res1.data.observational.observations.wind.directionText;
-            let rain = res1.data.observational.observations.rainfall.todayAmount;
-            let predict = res2.data[0].forecasts.weather.days[0].entries[0].precis;
-            let min = res2.data[0].forecasts.weather.days[0].entries[0].min;
-            let max = res2.data[0].forecasts.weather.days[0].entries[0].max;
-            let preRainProb = res3.data.forecasts.rainfall.days[0].entries[0].probability;
-            let preRainStart = res3.data.forecasts.rainfall.days[0].entries[0].startRange;
-            if (preRainStart === null) { preRainStart = ''; }
-            let preRainDivide = res3.data.forecasts.rainfall.days[0].entries[0].rangeDivide;
-            let preRainEnd = res3.data.forecasts.rainfall.days[0].entries[0].endRange;
-
-
-            let currentWeather = `**${name}** current conditions - **${temp}°C** @  **${humidity}%** humidity. Wind is **${wind}km/h** from the **${windDir}**. Rainfall today **${rain}mm**. Forecast for today, **${predict}** | **${max}°C** / **${min}°C** |. **${preRainProb}%** chance of **${preRainStart} ${preRainDivide} ${preRainEnd}mm** of rain. `;
-            message.channel.send(currentWeather);
-          })).catch(err => {
-            console.log(err);
-          });
-        });
+        console.log(w);
+      };
+      weatherMessage();
     }
     else if (CMD_NAME === 'wwf') {
       let postCode = args[0];
