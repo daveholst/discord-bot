@@ -116,14 +116,17 @@ client.on('message', (message) => {
       let postCode = args[0];
       const userId = message.author.id;
       if (!postCode) {
-        users.forEach(user => {
+        for (let i = 0; i < users.length; i++) {
+          const user = users[i];
           if (userId === user.userId) {
             postCode = user.postcode;
+            break;
           } else {
             postCode = '6000';
           }
-        });
-      }      axios.get(`https://api.willyweather.com.au/v2/${wwToken}/search.json?query=${postCode}`)
+        }
+      }
+      axios.get(`https://api.willyweather.com.au/v2/${wwToken}/search.json?query=${postCode}`)
         .then(res => {
           console.log(res.data);
           console.log(res.data[0].id);
@@ -161,13 +164,15 @@ client.on('message', (message) => {
       let postCode = args[0];
       const userId = message.author.id;
       if (!postCode) {
-        users.forEach(user => {
+        for (let i = 0; i < users.length; i++) {
+          const user = users[i];
           if (userId === user.userId) {
             postCode = user.postcode;
+            break;
           } else {
             postCode = '6000';
           }
-        });
+        }
       }
       axios.get(`https://api.willyweather.com.au/v2/${wwToken}/search.json?query=${postCode}`)
         .then(res => {
@@ -273,31 +278,33 @@ client.on('message', (message) => {
           postcode: postcode
         };
         users.push(userDetails);
-        fs.writeFile('./src/users.json', JSON.stringify(users),
-          (err) => err ? console.log(err) : console.log('DB Write Success'));
+        fs.writeFile('./src/users.json', JSON.stringify(users, null, 2),
+          (err) => err ? console.log(err) : console.log('Blanck DB - Added New User - DB Write Success'));
         return;
       }
 
       // find user and see if it exists & add
+      let userUpdated = false;
       users.forEach(user => {
         if (userId === user.userId) {
           user.postcode = postcode;
-          fs.writeFile('./src/users.json', JSON.stringify(users),
-            (err) => err ? console.log(err) : console.log('DB Write Success'));
-          return;
+          fs.writeFile('./src/users.json', JSON.stringify(users, null, 2),
+            (err) => err ? console.log(err) : console.log('Updated User - DB Write Success'));
+          userUpdated = true;
           // if no user, make one
         }
-        // array has length but user is not in the DB
+      });
+      // array has length but user is not in the DB
+      if (userUpdated === false) {
         const userDetails = {
           username: userName,
           userId: userId,
           postcode: postcode
         };
         users.push(userDetails);
-        fs.writeFile('./src/users.json', JSON.stringify(users),
-          (err) => err ? console.log(err) : console.log('DB Write Success'));
-
-      });
+        fs.writeFile('./src/users.json', JSON.stringify(users, null, 2),
+          (err) => err ? console.log(err) : console.log('Added New User - DB Write Success'));
+      }
 
       // if user doesnt exist, create
 

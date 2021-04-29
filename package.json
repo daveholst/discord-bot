@@ -20,5 +20,10 @@
   },
   "devDependencies": {
     "eslint": "^7.7.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "src/*.json"
+    ]
   }
 }
