@@ -7,9 +7,6 @@ const users = JSON.parse(rawUsers);
 // bring in new weather module
 const { weatherToday, weatherForecast } = require('./ww.js');
 
-//axios
-const axios = require('axios');
-
 //discord connect
 const {
   Client
@@ -184,7 +181,7 @@ client.on('message', (message) => {
           // get hours
           const hoursLeft = Math.floor(timeLeftRaw);
           // get Minutes
-          const minsLeft = Math.floor((timeLeftRaw % hoursLeft) * 60);
+          const minsLeft = Math.floor((timeLeftRaw - (hoursLeft * 60)) * 60);
           console.log(minsLeft);
           happyMessage = `it's ${hoursLeft} hours and ${minsLeft} minutes til happy hour. 😭 `;
         }
