@@ -3,22 +3,6 @@ require("dotenv").config();
 const fs = require("fs");
 const userFilePath = "./src/users.json";
 
-// check if users.json exists
-// if (!fs.existsSync(userFilePath)) {
-//   fs.writeFile(
-//     userFilePath,
-//     JSON.stringify([{ test: "test" }]),
-//     "utf8",
-//     (err) => {
-//       if (err) {
-//         console.error("Error Writing new users.json :: " + err);
-//       }
-//       // file written successfully
-//     }
-//   );
-// }
-
-// const rawUsers = ;
 const users = fs.existsSync(userFilePath)
   ? JSON.parse(fs.readFileSync(userFilePath))
   : [];
@@ -46,10 +30,6 @@ const hass = new HomeAssistant({
   // Optional
   token: process.env.HASS_TOKEN,
 
-  // Your Home Assistant Legacy API password
-  // Optional
-  // password: 'api_password',
-
   // Ignores SSL certificate errors, use with caution
   // Optional, defaults to false
   ignoreCert: false,
@@ -60,21 +40,7 @@ client.login(process.env.DISCORDJS_BOT_TOKEN);
 client.on("ready", () => {
   console.log(`${client.user.username}` + " is ready!");
 });
-//Required for http/https API request
-const http = require("http");
-const https = require("https");
-const { resolve } = require("path");
 const wwToken = process.env.WW_TOKEN;
-// let currentWeather = '';
-
-// client.on('message',(message) => {
-//   if (message.author.bot) return;
-//   console.log(`[${message.author.tag}]:${message.content}`);
-//   if (message.content === 'hello') {
-//     // message.reply('hello there!');
-//     message.channel.send('I\'m here')
-//   }
-// })
 
 // function to get day of week
 function getDayOfWeek(date) {
@@ -181,7 +147,7 @@ client.on("message", (message) => {
     } else if (CMD_NAME === "beer") {
       let beerFridgeRes = "";
       let happyMessage = "";
-      const happyHour = 16.0;
+      const happyHour = 16;
       const date = new Date();
       // curent minutes as fraction of an hour
       const currentMin = parseInt(date.getMinutes()) / 60;
@@ -195,12 +161,12 @@ client.on("message", (message) => {
           happyMessage = " it's Happy Hour! 🍻";
         } else {
           //calc time left til happy hour
-          let timeLeftRaw = happyHour - currentHour;
-          console.log(timeLeftRaw);
+          const timeLeftHours = happyHour - currentHour;
+          console.log("Hourse ", timeLeftHours);
           // get hours
-          const hoursLeft = Math.floor(timeLeftRaw);
+          const hoursLeft = Math.floor(timeLeftHours);
           // get Minutes
-          const minsLeft = Math.floor((timeLeftRaw - hoursLeft * 60) * 60);
+          const minsLeft = Math.floor((timeLeftHours * 60) % 60);
           console.log(minsLeft);
           happyMessage = `it's ${hoursLeft} hours and ${minsLeft} minutes til happy hour. 😭 `;
         }
