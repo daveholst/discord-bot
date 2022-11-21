@@ -168,7 +168,10 @@ client.on("message", (message) => {
           // get Minutes
           const minsLeft = Math.floor((timeLeftHours * 60) % 60);
           console.log(minsLeft);
-          happyMessage = `it's ${hoursLeft} hours and ${minsLeft} minutes til happy hour. 😭 `;
+          // hours formatted
+          const hoursFormatted =
+            hoursLeft !== 0 ? " " + hoursLeft + " hours and" : "";
+          happyMessage = `it's${hoursFormatted} ${minsLeft} minutes til happy hour. 😭 `;
         }
 
         const beerMessage = `${beerFridgeRes} ${happyMessage}`;
